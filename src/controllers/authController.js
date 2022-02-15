@@ -12,10 +12,9 @@ const { verifyToken } = require('../utils/JWTService');
  * @access   public
  */
 exports.register = asyncHandler(async (req, res, next) => {
-	let { email, password, name } = req.body;
-	const id = uuid.v4().slice(0, 4);
+	let { email, password, username } = req.body;
 	const Userdata = {
-		username: name + id,
+		username,
 		email,
 		password,
 	};

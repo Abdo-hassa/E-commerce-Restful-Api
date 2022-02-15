@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const uuid = require('uuid');
 
 const UserSchema = new mongoose.Schema(
 	{
@@ -15,8 +16,10 @@ const UserSchema = new mongoose.Schema(
 );
 UserSchema.pre('save', async function (next) {
 	const user = this;
+	const id = uuid.v4().slice(0, 4);
 	const hashedPassword = await bcrypt.hash(user.password, 12);
 	user.password = hashedPassword;
+	user.username = user.username + id;
 	next();
 });
 
