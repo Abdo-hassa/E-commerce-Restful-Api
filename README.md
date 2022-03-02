@@ -2,8 +2,8 @@
 
 REST-API built with express and jwt for authentication proces and authorization and refresh tokens with stripe as a payment method,Validation and Error Handling
 
-### Postman Collection 
-[a relative link](https://www.getpostman.com/collections/ff6ac674ef42c4da7eef)
+### Postman Collection
+(https://www.getpostman.com/collections/ff6ac674ef42c4da7eef)
 
 ### **Used Technologoies**
 1. ExpressJs
