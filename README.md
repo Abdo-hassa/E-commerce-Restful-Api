@@ -1,6 +1,7 @@
 # E-commerce-Restful-Api
 
-REST-API built with express and jwt for authentication proces and authorization and refresh tokens with stripe as a payment method,Validation and Error Handling
+REST-API built with express and jwt for authentication proces and authorization and refresh tokens with stripe as a payment method,Validation, Error Handling 
+and soft delete (Deactivate and Activate user )
 
 # Postman Collection
 ```
