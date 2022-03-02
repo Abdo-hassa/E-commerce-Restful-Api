@@ -1,6 +1,7 @@
 const Product = require('../models/Product');
 const asyncHandler = require('express-async-handler');
 const { ErrorHandler } = require('../helpers/ErrorHandler');
+const {generateCriteriaObject} = require('../helpers/helper')
 const uuid = require('uuid');
 
 /**
@@ -72,3 +73,10 @@ exports.getAllProducts = asyncHandler(async (req, res, next) => {
   }
 	res.status(200).json(products);
 });
+
+exports.productSearch = asyncHandler(async (req, res, next) => {
+	const allDate = req.body
+	const data = generateCriteriaObject(allDate)
+	const matchedProduct = await Product.find(data)
+	res.json(matchedProduct)
+})

@@ -1,17 +1,17 @@
-const mongoose = require("mongoose");
-
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema
 const ProductSchema = new mongoose.Schema(
-  {
-    title: { type: String, required: true, unique: true },
-    desc: { type: String, required: true, },
-    img: { type: String, required: true },
-    categories: { type: Array },
-    size: { type: String },
-    color: { type: String },
-    price: { type: Number, required: true },
-    
-  },
-  { timestamps: true }
+	{
+		title: { type: String, required: true ,unique: true, index: true },
+		desc: { type: String, required: true ,unique: false},
+		img: { type: String, required: true ,unique: false},
+		categories: { type: Array },
+		size: { type: String },
+		color: { type: String },
+		price: { type: Number, required: true },
+	},
+	{ timestamps: true }
 );
-
-module.exports = mongoose.model("Product", ProductSchema);
+// ProductSchema.set('autoIndex', false);
+ProductSchema.index({ "title": "text" })
+module.exports = mongoose.model('Product', ProductSchema);

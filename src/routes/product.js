@@ -7,15 +7,18 @@ const {
 	deleteProduct,
 	getProduct,
 	getAllProducts,
+	productSearch,
 } = require('../controllers/productController');
-
-const { isAuth, isAuthorized, isAdmin } = require('../middleware/authorizationMiddlewares');
+const { checkValidationErrors } = require('../utils/checkValidation');
+const { createProductValidator } = require('../validation/productValidation');
+const { isAuth, isAdmin } = require('../middleware/authorizationMiddlewares');
 
 //Admins Routes
-Router.post('/', isAuth, isAdmin, createProduct);
+Router.post('/', isAuth, isAdmin, createProductValidator, checkValidationErrors, createProduct);
+Router.post('/search', isAuth, productSearch);
 Router.get('/products', getAllProducts);
-Router.put('/:id', isAuth, isAuthorized, updateProduct);
-Router.delete('/:id', isAuth, isAuthorized, deleteProduct);
-Router.get('/:id', isAuth, isAuthorized, getProduct);
+Router.put('/:id', isAuth, isAdmin, updateProduct);
+Router.delete('/:id', isAuth, isAdmin, deleteProduct);
+Router.get('/:id', getProduct);
 
 module.exports = Router;

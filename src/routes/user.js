@@ -10,7 +10,7 @@ Router.get('/users', isAuth, isAdmin, getAllUsers);
 Router.get('/stats', isAuth, isAdmin, getStats);
 
 Router.put('/:id', isAuth, isAuthorized, updateUser);
-Router.delete('/:id', isAuth, isAuthorized, deleteUser);
+Router.delete('/:id', isAuth, isAdmin, deleteUser);
 Router.get('/:id', isAuth, isAuthorized, getUser);
 
 module.exports = Router;

@@ -3,7 +3,6 @@ const asyncHandler = require('express-async-handler');
 const { ErrorHandler } = require('../helpers/ErrorHandler');
 const uuid = require('uuid');
 
-
 /**
  * @desc     Update process
  * @route    PUT /user/:id
@@ -11,16 +10,14 @@ const uuid = require('uuid');
  */
 exports.updateUser = asyncHandler(async (req, res, next) => {
 	const userId = req.params.id;
-	const user = await User.findByIdAndUpdate(userId, { $set: req.body }, { new: true });
+	const user = await User.findByIdAndUpdate(userId, { $set: req.body }, { new: true },);
 	if (!user) {
 		throw new ErrorHandler(401, 'there is no user');
 	}
 
-	await user.save();
+  // let updatedUser =  await user.save();
 	res.status(201).json({ message: 'updated', user });
 });
-
-
 
 /**
  * @desc     Delete process
@@ -33,8 +30,6 @@ exports.deleteUser = asyncHandler(async (req, res, next) => {
 	res.status(201).json({ message: 'UserDelated' });
 });
 
-
-
 /**
  * @desc     Get process
  * @route    GET /user/:id
@@ -46,8 +41,6 @@ exports.getUser = asyncHandler(async (req, res, next) => {
 	res.status(201).json({ user: user.hidePrivateData() });
 });
 
-
-
 /**
  * @desc     Get process
  * @route    GET /users
@@ -58,8 +51,6 @@ exports.getAllUsers = asyncHandler(async (req, res, next) => {
 	const users = query ? await User.find({}).sort({ id: -1 }).limit(5) : await User.find();
 	res.status(200).json(users);
 });
-
-
 
 /**
  * @desc     Get process

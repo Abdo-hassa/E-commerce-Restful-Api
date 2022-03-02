@@ -48,3 +48,52 @@ exports.login = asyncHandler(async (req, res, next) => {
 		.status(200)
 		.json({ status: 'success', user: { accessToken: accessToken, refreshToken: refreshToken, _id: user._id } });
 });
+
+/**
+ * @desc     Deactivate process
+ * @route    POST /auth/deactivate
+ * @access   users
+ */
+exports.Deactivate = asyncHandler(async (req, res, next) => {
+	const userId = req.body.userId;
+	const user = await User.findById(userId);
+	if (!user && userId !== req.user._id.toString()) {
+		throw new ErrorHandler(401, 'You Can not Deactivate this Account');
+	}
+	await user.delete();
+	res.json({ message: 'User Deactivated' });
+});
+
+/**
+ * @desc     Activate process
+ * @route    POST /auth/activate
+ * @access   users
+ */
+exports.Activate = asyncHandler(async (req, res, next) => {
+	const userId = req.body.userId;
+	const user = await User.findById(userId);
+	if (!user && userId !== req.user._id.toString()) {
+		throw new ErrorHandler(401, 'You Can not Activate this Account');
+	}
+	await user.restore();
+	res.json({ message: 'User Activated' });
+});
+
+/**
+ * @desc     Refresh Token process
+ * @route    POST /auth/refresh
+ * @access   users
+ */
+exports.refreshToken = asyncHandler(async (req, res, next) => {
+	if (!req.headers?.refresh && !req.headers?.refresh?.startsWith('Bearer')) {
+		throw new ErrorHandler(401, 'Invalid token hhh');
+	}
+	const token = req.headers.refresh.split(' ')[1];
+	const decodedRefreshToken = verifyToken(token, 'refresh');
+
+	if (decodedRefreshToken && decodedRefreshToken.email === req.user.email) {
+		const payload = { email: req.user.email, _id: req.user._id };
+		const { accessToken, refreshToken } = generateToken(payload);
+		res.json({ accessToken, refreshToken });
+	}
+});

@@ -1,71 +1,44 @@
-const Cart = require('../models/Cart');
+const Product = require('../models/Product');
+const User = require('../models/User');
 const asyncHandler = require('express-async-handler');
 const { ErrorHandler } = require('../helpers/ErrorHandler');
 const uuid = require('uuid');
 
 /**
- * @desc     Create process
- * @route    POST /cart
+ * @desc     add to cart process
+ * @route    POST /cart/addcart
  * @access   all users
  */
-exports.createCart = asyncHandler(async (req, res, next) => {
-	const CartData = req.body;
-	const cart = await new Cart(CartData);
-	await cart.save();
-	res.status(201).json(cart);
+ exports.addToCart = asyncHandler(async (req, res, next) => {
+	const user = req.user;
+	const productId = req.params.productId;
+	const product = await Product.findById(productId);
+	user.addToCart(product);
+	res.status(201).json({ message: 'Added to cart' });
 });
 
 /**
- * @desc     Update process
- * @route    PUT /cart/:id
+ * @desc     Delete form cart process
+ * @route    DELETE /cart/dfromcart
  * @access   users and Admins
  */
-exports.updateCart = asyncHandler(async (req, res, next) => {
-	const cartId = req.params.id;
-	const cart = await Cart.findByIdAndUpdate(cartId, { $set: req.body }, { new: true });
-	if (!cart) {
-		throw new ErrorHandler(401, 'there is no cart');
-	}
-	await cart.save();
-	res.status(201).json({ message: 'updated', cart });
-});
-
-/**
- * @desc     Delelte process
- * @route    DELETE /cart/:id
- * @access   users and Admins
- */
-exports.deleteCart = asyncHandler(async (req, res, next) => {
-	const cartId = req.params.id;
-	await Cart.findByIdAndDelete(cartId);
-	res.status(201).json({ message: 'cart Delated' });
+ exports.deleteFromCart = asyncHandler(async (req, res, next) => {
+	const productId = req.body.productId;
+	req.user.removeFromCart(productId);
+	res.status(200).json({ message: 'Deleted' });
 });
 
 /**
  * @desc     Get process
- * @route    GET /cart/:userId
- * @access   users and Admins
+ * @route    GET /usercart
+ * @access   users
  */
-exports.getUserCart = asyncHandler(async (req, res, next) => {
-	const userId = req.params.userId;
-	const cart = await Cart.findOne({ userId: userId });
-	res.status(201).json(cart);
+ exports.getUserCart = asyncHandler(async (req, res, next) => {
+	const userid = req.user._id.toString();
+	const user = await User.findById(userid).populate('cart.items.productid');
+	const products = user.cart.items;
+	res.status(201).json(products);
 });
 
-/**
- * @desc     Get process
- * @route    GET /products
- * @access   Admins
- */
-exports.getAllCart = asyncHandler(async (req, res, next) => {
-	const carts = await Cart.find();
-	res.status(200).json(carts);
-});
-
-/**
- * @desc     Get process
- * @route    GET /income
- * @access   Admins
- */
 
 

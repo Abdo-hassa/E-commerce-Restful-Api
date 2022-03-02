@@ -7,20 +7,16 @@ exports.isAuth = asyncHandler(async (req, res, next) => {
 	if (!req.headers?.authorization && !req.headers?.authorization?.startsWith('Bearer')) {
 		throw new ErrorHandler(401, 'Not authenticated');
 	} else {
-		try {
-			const token = req.headers.authorization.split(' ')[1];
-			let decodedToken = verifyToken(token);
-			let user = await User.findById(decodedToken._id);
-			req.user = user;
-			// console.log(req.user._id.toString(),'from isAuth')
-			next();
-		} catch (e) {
+		const token = req.headers.authorization.split(' ')[1];
+		let decodedToken = verifyToken(token);
+		let user = await User.findById(decodedToken._id);
+		req.user = user;
+		if (!req.user) {
 			throw new ErrorHandler(401, 'Invalid token.');
 		}
+		next();
 	}
 });
-
-
 
 exports.isAdmin = asyncHandler(async (req, res, next) => {
 	if (req.user.isAdmin) {
@@ -30,17 +26,10 @@ exports.isAdmin = asyncHandler(async (req, res, next) => {
 	}
 });
 
-
 exports.isAuthorized = asyncHandler(async (req, res, next) => {
-	// console.log(req.user._id.toString(),'from isAuthorized req')
-	// console.log(req.params.id,'from isAuthorized params' )
-	// console.log(req.user.isAdmin)
-
 	if (req.user._id.toString() == req.params.id || req.user.isAdmin) {
 		next();
 	} else {
 		throw new ErrorHandler(403, 'You are not allow to do that');
 	}
 });
-
-
