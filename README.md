@@ -19,7 +19,7 @@ https://www.getpostman.com/collections/ff6ac674ef42c4da7eef
 
 1. type in your terminal
 2. _git clone <https://github.com/Abdo-hassa/E-commerce-Restful-Api.git>_
-3. _cd Social_Rest_Api
+3. _cd E-commerce-Restful-Api
 4. _npm install_
 5. create .env file and put your Database_Url in it
 
