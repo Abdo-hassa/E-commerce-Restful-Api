@@ -10,12 +10,24 @@ const uuid = require('uuid');
  */
 exports.updateUser = asyncHandler(async (req, res, next) => {
 	const userId = req.params.id;
-	const user = await User.findByIdAndUpdate(userId, { $set: req.body }, { new: true },);
+	let updateobj;
+	if (req.file) {
+		updateobj = {
+			...req.body,
+			file: req.file,
+		};
+	} else {
+		updateobj = {
+			...req.body,
+		};
+	}
+	// console.log(updateobj)
+	const user = await User.findByIdAndUpdate(userId, { $set: updateobj }, { new: true });
 	if (!user) {
 		throw new ErrorHandler(401, 'there is no user');
 	}
 
-  // let updatedUser =  await user.save();
+	// let updatedUser =  await user.save();
 	res.status(201).json({ message: 'updated', user });
 });
 

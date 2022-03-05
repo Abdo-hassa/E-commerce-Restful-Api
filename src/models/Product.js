@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema
+const Schema = mongoose.Schema;
+const path = require('path');
+const cloudinary = require('cloudinary');
 const ProductSchema = new mongoose.Schema(
 	{
-		title: { type: String, required: true ,unique: true, index: true },
-		desc: { type: String, required: true ,unique: false},
-		img: { type: String, required: true ,unique: false},
+		title: { type: String, required: true, unique: true, index: true },
+		desc: { type: String, required: true, unique: false },
+		img: { type: String, required: true, unique: false },
 		categories: { type: Array },
 		size: { type: String },
 		color: { type: String },
@@ -12,6 +14,15 @@ const ProductSchema = new mongoose.Schema(
 	},
 	{ timestamps: true }
 );
-// ProductSchema.set('autoIndex', false);
-ProductSchema.index({ "title": "text" })
+
+ProductSchema.pre('findOneAndUpdate', async function (next) {
+	const product = this;
+	if (product._update['$set'].file) {
+		const data = await cloudinary.v2.uploader.upload(product._update['$set'].file.path);
+		console.log(data.url);
+		product._update['$set'].img = data.url;
+	}
+	next();
+});
+
 module.exports = mongoose.model('Product', ProductSchema);

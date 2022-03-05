@@ -23,7 +23,18 @@ exports.createProduct = asyncHandler(async (req, res, next) => {
  */
 exports.updateProduct = asyncHandler(async (req, res, next) => {
 	const productId = req.params.id;
-	const product = await Product.findByIdAndUpdate(productId, { $set: req.body }, { new: true });
+	let updateobj
+	if(req.file){
+		 updateobj = {
+		  ...req.body,
+			file: req.file
+		}
+	}else{
+		updateobj = {
+		 ...req.body,
+	 };
+	}
+	const product = await Product.findByIdAndUpdate(productId, { $set: updateobj }, { new: true });
 	if (!product) {
 		throw new ErrorHandler(401, 'there is no product');
 	}

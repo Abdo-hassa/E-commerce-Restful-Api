@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const uuid = require('uuid');
+const path = require('path');
+const cloudinary = require('cloudinary');
 const mongoose_delete = require('mongoose-delete');
 const Schema = mongoose.Schema;
 const UserSchema = new mongoose.Schema(
@@ -8,6 +10,7 @@ const UserSchema = new mongoose.Schema(
 		username: { type: String, required: true, unique: true },
 		email: { type: String, required: true },
 		password: { type: String, required: true },
+		img: String,
 		isAdmin: {
 			type: Boolean,
 			default: false,
@@ -43,9 +46,15 @@ UserSchema.pre('save', async function (next) {
 UserSchema.pre('findOneAndUpdate', async function (next) {
 	const user = this;
 	const id = uuid.v4().slice(0, 4);
-	const hashedPassword = await bcrypt.hash(user._update['$set'].password, 12);
-	if (user._update['$set'].username) user._update['$set'].username = user._update['$set'].username + id;
-	if (user._update['$set'].password) user._update['$set'].password = hashedPassword;
+	if (user._update['$set'].body.username) user._update['$set'].username = user._update['$set'].body.username + id;
+	if (user._update['$set'].body.password) {
+		const hashedPassword = await bcrypt.hash(user._update['$set'].body.password, 12);
+		user._update['$set'].password = hashedPassword;
+	}
+	if (user._update['$set'].file) {
+		const data = await cloudinary.v2.uploader.upload(user._update['$set'].file.path);
+		user._update['$set'].img = data.url;
+	}
 	next();
 });
 UserSchema.methods.hidePrivateData = function () {
