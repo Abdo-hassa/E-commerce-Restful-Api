@@ -46,9 +46,9 @@ UserSchema.pre('save', async function (next) {
 UserSchema.pre('findOneAndUpdate', async function (next) {
 	const user = this;
 	const id = uuid.v4().slice(0, 4);
-	if (user._update['$set'].body.username) user._update['$set'].username = user._update['$set'].body.username + id;
-	if (user._update['$set'].body.password) {
-		const hashedPassword = await bcrypt.hash(user._update['$set'].body.password, 12);
+	if (user._update['$set'].username) user._update['$set'].username = user._update['$set'].username + id;
+	if (user._update['$set'].password) {
+		const hashedPassword = await bcrypt.hash(user._update['$set'].password, 12);
 		user._update['$set'].password = hashedPassword;
 	}
 	if (user._update['$set'].file) {
