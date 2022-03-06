@@ -3,6 +3,8 @@ const asyncHandler = require('express-async-handler');
 const { ErrorHandler } = require('../helpers/ErrorHandler');
 const {generateCriteriaObject} = require('../helpers/helper')
 const uuid = require('uuid');
+const cloudinary = require('cloudinary');
+
 
 /**
  * @desc     Create process
@@ -10,7 +12,12 @@ const uuid = require('uuid');
  * @access   Admins
  */
 exports.createProduct = asyncHandler(async (req, res, next) => {
-	const productData = req.body;
+	const data = await cloudinary.v2.uploader.upload(req.file.path);
+	const productData = {
+		...req.body,
+		img:data.url
+	};
+	console.log(productData)
 	const product = await new Product(productData);
 	await product.save();
 	res.status(201).json(product);

@@ -4,9 +4,9 @@ const path = require('path');
 const cloudinary = require('cloudinary');
 const ProductSchema = new mongoose.Schema(
 	{
-		title: { type: String, required: true, unique: true, index: true },
-		desc: { type: String, required: true, unique: false },
-		img: { type: String, required: true, unique: false },
+		title: { type: String, required: true, index: true },
+		desc: { type: String, required: true},
+		img: { type: String, required: true},
 		categories: { type: Array },
 		size: { type: String },
 		color: { type: String },
