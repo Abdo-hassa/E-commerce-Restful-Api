@@ -1,7 +1,7 @@
 # E-commerce-Restful-Api
 
 REST-API built with express and jwt for authentication proces and authorization and refresh tokens with stripe as a payment method,Validation, Error Handling 
-and soft delete (Deactivate and Activate user )
+,soft delete (Deactivate and Activate user ) and uploading files with Cloudinary
 
 # Postman Collection
 ```
@@ -14,6 +14,7 @@ https://www.getpostman.com/collections/ff6ac674ef42c4da7eef
 3. MongoDb
 4. mongoose
 5. stripe
+6. Cloudinary
 
 
 # How it works ?
