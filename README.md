@@ -1,7 +1,7 @@
 # E-commerce-Restful-Api
 
-REST-API built with express and jwt for authentication proces and authorization and refresh tokens with stripe as a payment method,Validation, Error Handling 
-,soft delete (Deactivate and Activate user ) and uploading files with Cloudinary
+REST-API built with express and jwt for authentication process and authorization and refresh tokens with stripe as a payment method, Validation, Error Handling 
+, soft delete (Deactivate and Activate user ) and uploading files with Cloudinary
 
 # Postman Collection
 ```
