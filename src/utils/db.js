@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { ErrorHandler } = require('../helpers/ErrorHandler');
+require('dotenv').config();
 exports.connectDB = () => {
 	try {
 		return mongoose.connect(
