@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const { ErrorHandler } = require('../helpers/ErrorHandler');
-mongoose.set('runValidators', true);
 exports.connectDB = () => {
 	try {
 		return mongoose.connect(
