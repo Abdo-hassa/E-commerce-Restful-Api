@@ -129,7 +129,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
 
 	transporter.sendMail({
 		to: email,
-		from: 'abdallahhassann1998@gmail.com',
+		from: 'abdallahhasssan10@gmail.com',
 		subject: 'Password reset',
 		html: `
 <p>You requested a password reset.</p>
@@ -160,7 +160,7 @@ exports.newPassword = asyncHandler(async (req, res, next) => {
 
 	transporter.sendMail({
 		to: decodedToken.email,
-		from: 'abdallahhassann1998@gmail.com',
+		from: 'abdallahhasssan10@gmail.com',
 		subject: 'Password reset',
 		html: `
 <p>password updated successfully.</p>
